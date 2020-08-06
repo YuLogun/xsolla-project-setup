@@ -1,6 +1,7 @@
 const path = require("path");
 const HtmlPlugin = require("html-webpack-plugin");
 const MiniCssPlugin = require("mini-css-extract-plugin");
+const webpack = require("webpack");
 
 module.exports = (env, argv) => ({
   entry: "./src/index.jsx",
@@ -11,12 +12,16 @@ module.exports = (env, argv) => ({
   devtool: argv.mode === "production" ? "hidden-source-map" : "source-map",
   resolve: {
     extensions: [".js", ".jsx"],
+    alias: {
+      "react-dom": "@hot-loader/react-dom",
+    },
   },
   plugins: [
     new MiniCssPlugin(),
     new HtmlPlugin({
       template: "./src/index.html",
     }),
+    //new webpack.HotModuleReplacementPlugin(),
   ],
   module: {
     rules: [
@@ -48,5 +53,6 @@ module.exports = (env, argv) => ({
   devServer: {
     port: 9000,
     contentBase: path.join(__dirname, "dist"),
+    hot: true,
   },
 });
