@@ -48,6 +48,18 @@ module.exports = (env, argv) => ({
           "sass-loader",
         ],
       },
+      {
+        test: /\.svg$/,
+        use: [
+          {
+            loader: "svg-url-loader",
+            options: {
+              limit: 10 * 1024,
+              noquotes: true,
+            },
+          },
+        ],
+      },
     ],
   },
   devServer: {

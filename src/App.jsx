@@ -2,6 +2,7 @@ import { hot } from "react-hot-loader/root";
 import React, { useState, useEffect } from "react";
 import Card from "./Card/Card";
 import Dropdown from "./Dropdown/Dropdown";
+import pic404 from "./notFound.svg";
 import styles from "./styles.scss";
 
 const monthsArr = [
@@ -59,6 +60,7 @@ const App = () => {
     changeSelectedOption(option);
   };
   const citiesArr = [...new Set(events.map((event) => event.city))];
+
   const isMonthSelected = justMonthsNamesArr.indexOf(selectedOption) !== -1;
   let filterdEvents;
   if (isMonthSelected) {
@@ -86,11 +88,19 @@ const App = () => {
           onOptionChange={onOptionChange}
         />
       </div>
-      <div className={styles.cardFolder}>
-        {dataToPass.map((event) => (
-          <Card key={event.id} {...event} />
-        ))}
-      </div>
+      {dataToPass.length !== 0 ? (
+        <div className={styles.cardFolder}>
+          {dataToPass.map((event) => (
+            <Card key={event.id} {...event} />
+          ))}
+        </div>
+      ) : (
+        <img
+          src={pic404}
+          alt="404 error picture"
+          className={styles.notFoundPic}
+        />
+      )}
     </div>
   );
 };
