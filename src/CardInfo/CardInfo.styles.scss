@@ -1,0 +1,28 @@
+.outerContainer {
+  height: 100vh;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  color: #fff;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 90%;
+  justify-content: center;
+  align-items: center;
+  font-size: 2.25em;
+  font-weight: 600;
+
+  .smallContainer {
+    backdrop-filter: blur(6px);
+    padding: 2em;
+    border-radius: 3px;
+  }
+}
+
+.link {
+  font-size: 1.25em;
+  color: #fff;
+}
