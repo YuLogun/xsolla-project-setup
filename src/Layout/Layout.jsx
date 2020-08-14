@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import Heading from "../Heading/Heading";
-import Filters from "./Filters/Filters";
-import EventsList from "./EventsList/EventsList";
 import { monthsArr, justMonthsNamesArr } from "./months";
-
-import pic404 from "../notFound.svg";
+import LoadingIcon from "../LoadingIcon/LoadingIcon";
 
 import styles from "./Layout.styles.scss";
+
+const Filters = React.lazy(() => import("./Filters/Filters"));
+const EventsList = React.lazy(() => import("./EventsList/EventsList"));
 
 const Layout = () => {
   const [events, setEvents] = useState([]);
@@ -38,12 +38,14 @@ const Layout = () => {
   return (
     <div className={styles.outerContainer}>
       <Heading title="Event Listing" />
-      <Filters
-        cities={citiesArr}
-        months={justMonthsNamesArr}
-        onOptionChange={onOptionChange}
-      />
-      <EventsList data={dataToPass} />
+      <Suspense fallback={<LoadingIcon />}>
+        <Filters
+          cities={citiesArr}
+          months={justMonthsNamesArr}
+          onOptionChange={onOptionChange}
+        />
+        <EventsList data={dataToPass} />
+      </Suspense>
     </div>
   );
 };

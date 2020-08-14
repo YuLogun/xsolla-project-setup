@@ -6,13 +6,19 @@ import styles from "./EventsList.styles.scss";
 
 const EventsList = ({ data }) => {
   return (
-    <div className={styles.cardFolder}>
-      {data.map((event) => (
-        <Link key={event.id} to={`/${event.id}`} className={styles.link}>
-          <Card {...event} />
-        </Link>
-      ))}
-    </div>
+    <>
+      {data.length !== 0 ? (
+        <div className={styles.cardFolder}>
+          {data.map((event) => (
+            <Link key={event.id} to={`/${event.id}`} className={styles.link}>
+              <Card {...event} />
+            </Link>
+          ))}
+        </div>
+      ) : (
+        <div className={styles.notFound}>Sorry, nothing is found</div>
+      )}
+    </>
   );
 };
 

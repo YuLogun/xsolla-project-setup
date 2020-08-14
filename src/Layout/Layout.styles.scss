@@ -12,9 +12,7 @@
 .outerContainer {
   padding: 0 7em 4em 7em;
   @include flexColumn();
-}
-
-.notFoundPic {
-  width: 100%;
-  max-height: 65vh;
+  @media screen and (max-width: 600px) {
+    padding: 0 3em 1.5em 3em;
+  }
 }
