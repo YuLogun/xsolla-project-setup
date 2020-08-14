@@ -1,50 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import Card from "../Card/Card";
-import Dropdown from "../Dropdown/Dropdown";
+import Heading from "../Heading/Heading";
+import Filters from "./Filters/Filters";
+import EventsList from "./EventsList/EventsList";
+import { monthsArr, justMonthsNamesArr } from "./months";
+
 import pic404 from "../notFound.svg";
-import styles from "./styles.scss";
 
-const monthsArr = [
-  {
-    January: "01",
-  },
-  {
-    February: "02",
-  },
-  {
-    March: "03",
-  },
-  {
-    April: "04",
-  },
-  {
-    May: "05",
-  },
-  {
-    June: "06",
-  },
-  {
-    July: "07",
-  },
-  {
-    August: "08",
-  },
-  {
-    September: "09",
-  },
-  {
-    October: "10",
-  },
-  {
-    November: "11",
-  },
-  {
-    December: "12",
-  },
-];
-
-const justMonthsNamesArr = monthsArr.map((it) => Object.keys(it)[0]);
+import styles from "./Layout.styles.scss";
 
 const Layout = () => {
   const [events, setEvents] = useState([]);
@@ -75,34 +37,13 @@ const Layout = () => {
 
   return (
     <div className={styles.outerContainer}>
-      <h1 className={styles.heading}>Event Listing</h1>
-      <div className={styles.select}>
-        <Dropdown
-          title="City"
-          options={citiesArr}
-          onOptionChange={onOptionChange}
-        />
-        <Dropdown
-          title="Month"
-          options={justMonthsNamesArr}
-          onOptionChange={onOptionChange}
-        />
-      </div>
-      {dataToPass.length !== 0 ? (
-        <div className={styles.cardFolder}>
-          {dataToPass.map((event) => (
-            <Link key={event.id} to={`/${event.id}`} className={styles.link}>
-              <Card {...event} />
-            </Link>
-          ))}
-        </div>
-      ) : (
-        <img
-          src={pic404}
-          alt="404 error picture"
-          className={styles.notFoundPic}
-        />
-      )}
+      <Heading title="Event Listing" />
+      <Filters
+        cities={citiesArr}
+        months={justMonthsNamesArr}
+        onOptionChange={onOptionChange}
+      />
+      <EventsList data={dataToPass} />
     </div>
   );
 };
