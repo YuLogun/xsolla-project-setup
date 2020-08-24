@@ -4,24 +4,25 @@ import { monthsArr, justMonthsNamesArr } from "./months";
 import LoadingIcon from "../LoadingIcon/LoadingIcon";
 
 import styles from "./Layout.styles.scss";
+import { connect } from "react-redux";
+import { fetchData } from "../redux/reducer";
 
 const Filters = React.lazy(() => import("./Filters/Filters"));
 const EventsList = React.lazy(() => import("./EventsList/EventsList"));
 
-const Layout = () => {
-  const [events, setEvents] = useState([]);
-  const [selectedOption, changeSelectedOption] = useState("");
-  const url =
-    "https://raw.githubusercontent.com/xsolla/xsolla-frontend-school-2020/master/events.json";
+const Layout = ({ reducerData, getData }) => {
   useEffect(() => {
-    fetch(url)
-      .then((res) => res.json())
-      .then((res) => setEvents(res));
-  }, [url]);
+    if (reducerData.length === 0) {
+      getData();
+    }
+  }, []);
+  const [selectedOption, changeSelectedOption] = useState("");
+
   const onOptionChange = (option) => {
     changeSelectedOption(option);
   };
-  const citiesArr = [...new Set(events.map((event) => event.city))];
+
+  const citiesArr = [...new Set(reducerData.map((event) => event.city))];
 
   const isMonthSelected = justMonthsNamesArr.indexOf(selectedOption) !== -1;
   let filterdEvents;
@@ -29,11 +30,16 @@ const Layout = () => {
     const month = monthsArr.filter((it) => it[selectedOption])[0][
       selectedOption
     ];
-    filterdEvents = events.filter((event) => event.date.slice(3, 5) === month);
+    filterdEvents = reducerData.filter(
+      (event) => event.date.slice(3, 5) === month
+    );
   } else {
-    filterdEvents = events.filter((event) => event.city === selectedOption);
+    filterdEvents = reducerData.filter(
+      (event) => event.city === selectedOption
+    );
   }
-  const dataToPass = selectedOption === "" ? events : filterdEvents;
+
+  const dataToPass = selectedOption === "" ? reducerData : filterdEvents;
 
   return (
     <div className={styles.outerContainer}>
@@ -50,4 +56,15 @@ const Layout = () => {
   );
 };
 
-export default Layout;
+const mapStateToProps = ({ reducerData }) => {
+  return {
+    reducerData,
+  };
+};
+const mapDispatchToProps = (dispacth) => {
+  return {
+    getData: () => dispacth(fetchData()),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Layout);
